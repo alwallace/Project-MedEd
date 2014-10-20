@@ -1,0 +1,2 @@
+NORMAL_IMAGE_TAG = 'normal'
+ABNORMAL_IMAGE_TAG = 'abnormal'

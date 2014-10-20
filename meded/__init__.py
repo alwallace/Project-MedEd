@@ -3,6 +3,8 @@ from flask import g
 from flask.ext.login import LoginManager
 import sqlite3
 import os
+from meded import views
+from meded import login
 
 app = Flask(__name__)
 app.config.from_object(__name__)
@@ -13,7 +15,7 @@ login_manager.login_message = "Hi, please log in."
 
 # Load default config and override config from an environment variable
 app.config.update(dict(
-    DATABASE=os.path.join(app.root_path, 'extra/test.sqlite'),
+    DATABASE=os.path.join(app.root_path, 'extra/meded.sqlite'),
     DEBUG=False,
     SECRET_KEY='\x977n\xfcrG4\x06\xed\xf0\xd3\'\x1dh"Q\xc4\xc0\n\xf0\xd9i_\xd4',
     USERNAME='admin',
@@ -50,9 +52,6 @@ def lastid_db():
 def close_db(error):
     if hasattr(g, 'sqlite_db'):
         g.sqlite_db.close()
-
-from ersim import views
-from ersim import login
 
 if __name__ == "__main__":
 	app.run(debug=app.config[DEBUG])
