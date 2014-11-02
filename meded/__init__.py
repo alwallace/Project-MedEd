@@ -3,8 +3,6 @@ from flask import g
 from flask.ext.login import LoginManager
 import sqlite3
 import os
-from meded import views
-from meded import login
 
 app = Flask(__name__)
 app.config.from_object(__name__)
@@ -24,7 +22,7 @@ app.config.update(dict(
 app.config.from_envvar('FLASKR_SETTINGS', silent=True)
 
 def connect_db():
-    print app.config['DATABASE']
+    print(app.config['DATABASE'])
     rv = sqlite3.connect(app.config['DATABASE'])
     rv.row_factory = sqlite3.Row
     return rv
@@ -52,6 +50,9 @@ def lastid_db():
 def close_db(error):
     if hasattr(g, 'sqlite_db'):
         g.sqlite_db.close()
+
+from meded import views
+from meded import login
 
 if __name__ == "__main__":
 	app.run(debug=app.config[DEBUG])

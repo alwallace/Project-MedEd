@@ -1,22 +1,21 @@
 import json
-from ersim import query_db
-
+from meded import app
+from meded import query_db
 
 def get(userid):
-	val = query_db("SELECT username, password, name FROM users WHERE user_id=?", (userid,), True)
+	val = query_db("SELECT username, password FROM users WHERE user_id=?", (userid,), True)
 	if val is not None:
-		return User(userid, val[0], val[1], val[2])
+		return User(userid, val[0], val[1])
 	else:
 		return None
 
 def getName(userid):
-	val = query_db("SELECT name FROM users WHERE user_id=?", (userid,), True)
+	val = query_db("SELECT username FROM users WHERE user_id=?", (userid,), True)
 
 
 class User():
-	def __init__(self, uid, username, password, name):
+	def __init__(self, uid, username, password):
 		self.uid = uid
-		self.name = name
 		self.username = username
 		self.password = password
 
@@ -30,7 +29,7 @@ class User():
 		return False
 
 	def get_id(self):
-		return unicode(self.uid)
+		return str(self.uid)
 
 	def __repr__(self):
-		return '<User ' + self.name + '>'
+		return '<User ' + self.username + '>'

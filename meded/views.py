@@ -27,6 +27,17 @@ def loginRoute():
 	elif request.method == 'GET':
 		return render_template("login.html")
 
+@app.route('/logout')
+@login_required
+def logoutRoute():
+	logout_user()
+	return redirect('/login')
+
+@app.route('/quiz/normals', methods=['GET'])
+@login_required
+def quizNormalsRoute():
+	return render_template("quiz_normals.html")
+
 @app.route('/get/normal_quiz', methods=['GET'])
 def getNormalQuizRoute():
 	return json.dumps(quiz.getNormalQuiz())
