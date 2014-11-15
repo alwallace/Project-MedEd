@@ -1,0 +1,102 @@
+<!DOCTYPE HTML>
+
+<head>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='StyleSheet.css') }}">
+</head>
+<html>
+
+<body>
+
+    <div id="header">
+        <div class="UserSection">
+            <a href="/logout">Logout</a>
+        </div>
+    </div>
+
+    <div id="leftpane">
+        <table id="leftnavtable">
+            <tbody>
+                <tr class="caserow">
+                    <td>Pre-Test</td>
+                </tr>
+                <tr class="caserow">
+                    <td>Ordering History</td>
+                </tr>
+                <tr class="caserow">
+                    <td>Imaging</td>
+                </tr>
+                <tr class="caserow">
+                    <td>Report</td>
+                </tr>
+                <tr class="caserow">
+                    <td>Summary</td>
+                </tr>
+                <tr class="caserow">
+                    <td>Post-Test</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div id="centerpane">
+    	<h1>Pre-Test</h1>
+        <table id="pretesttable">
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+
+    <div id="footer">
+    </div>
+
+</body>
+
+</html>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script>
+var selectedCaseID = getParameterByName("caseID");
+var pretestData;
+
+function addQuestionToCenter(question, answer) {
+	$("#pretesttable > tbody:last").append('<tr class="questionrow"><td class="questionCol">' + question + '</td><td class="answerCol">' + answer + '</td></tr>');
+};
+
+$(document).ready(function($) {
+    $("#leftnavtable").on("click", ".caserow", function() {
+        if ($(this).children("td").html() == "Pre-Test") {
+            window.location = "/pretest?caseID=" + selectedCaseID;
+        } else if ($(this).children("td").html() == "Ordering History") {
+            window.location = "/history?caseID=" + selectedCaseID;
+        } else if ($(this).children("td").html() == "Imaging") {
+            window.location = "/imaging?caseID=" + selectedCaseID;
+        } else if ($(this).children("td").html() == "Report") {
+            window.location = "/report?caseID=" + selectedCaseID;
+        } else if ($(this).children("td").html() == "Summary") {
+            window.location = "/summary?caseID=" + selectedCaseID;
+        } else if ($(this).children("td").html() == "Post-Test") {
+            window.location = "/posttest?caseID=" + selectedCaseID;
+        };
+    });
+
+    $("#pretesttable").on("click", ".questionrow", function() {
+    	$(this).children(".answerCol").css("visibility", "visible");
+    });
+
+    $.post("/pretest", {"caseID":selectedCaseID}, function(data, status) {
+    	var obj = JSON.parse(data);
+    	window.pretestData = obj;
+    	for (var i = 0; i < obj.length; i++) {
+			var row = obj[i];
+			addQuestionToCenter(row['question'], row['answer']);
+		};
+    });
+});
+
+function getParameterByName(name) {
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(location.search);
+    return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+}
+</script>

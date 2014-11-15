@@ -1,0 +1,112 @@
+<!DOCTYPE HTML>
+
+<head>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='StyleSheet.css') }}">
+</head>
+<html>
+
+<body>
+
+    <div id="header">
+        <div class="UserSection">
+            <a href="/logout">Logout</a>
+        </div>
+    </div>
+
+    <div id="leftpane">
+        <table id="leftnavtable">
+        	<tbody>
+                <tr class="caserow">
+                    <td>Pre-Test</td>
+                </tr>
+                <tr class="caserow">
+                    <td>Ordering History</td>
+                </tr>
+                <tr class="caserow">
+                    <td>Imaging</td>
+                </tr>
+                <tr class="caserow">
+                    <td>Report</td>
+                </tr>
+                <tr class="caserow">
+                    <td>Summary</td>
+                </tr>
+                <tr class="caserow">
+                    <td>Post-Test</td>
+                </tr>
+           	</tbody>
+        </table>
+    </div>
+
+    <div id="centerpanenoright">
+        <table id="centernavtable">
+        	<h1>History</h1>
+            <table id="historiestable">
+                <tbody>
+                </tbody>
+            </table>
+            <br>
+            <div id="historyexplanation">
+            </div>
+        </table>
+    </div>
+
+    <div id="footer">
+    </div>
+
+</body>
+
+</html>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script>
+selectedCaseID = getParameterByName("caseID");
+
+function loadHistoryTable(tabledata) {
+    for (var i = 0; i < tabledata.length; i++) {
+        $('#historiestable > tbody:last').append('<tr class="historyrow"><td>' + tabledata[i]['history'] + '</td><td class="historyanswercol" style="visibility:hidden;">' + tabledata[i]['history_adequate'] + '</td></tr>');
+    };
+};
+
+function loadHistoryExplanation(explanation) {
+    $("#historyexplanation").html(explanation);
+};
+
+$(document).ready(function($) {
+    $("#leftnavtable").on("click", ".caserow", function() {
+        if ($(this).children("td").html() == "Pre-Test") {
+            window.location = "/pretest?caseID=" + selectedCaseID;
+        } else if ($(this).children("td").html() == "Ordering History") {
+            window.location = "/history?caseID=" + selectedCaseID;
+        } else if ($(this).children("td").html() == "Imaging") {
+            window.location = "/imaging?caseID=" + selectedCaseID;
+        } else if ($(this).children("td").html() == "Report") {
+            window.location = "/report?caseID=" + selectedCaseID;
+        } else if ($(this).children("td").html() == "Summary") {
+            window.location = "/summary?caseID=" + selectedCaseID;
+        } else if ($(this).children("td").html() == "Post-Test") {
+            window.location = "/posttest?caseID=" + selectedCaseID;
+        }
+    });
+
+    $.post("/history", {'caseID':selectedCaseID}, function(data, status) {
+        obj = JSON.parse(data);
+        results = obj[0];
+        tabledata = [{'history':results['history'], 'history_adequate':results['history_adequate']}];
+
+        loadHistoryTable(tabledata);
+        loadHistoryExplanation(results['history_explanation']);
+    });
+
+    $("#historiestable").on("click", ".historyrow", function() {
+        $(this).children(".historyanswercol").css("visibility", "visible");
+    });
+});
+
+function getParameterByName(name) {
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(location.search);
+    return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+}
+</script>

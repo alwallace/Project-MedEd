@@ -1,21 +1,137 @@
 <!DOCTYPE HTML>
+
+<head>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='StyleSheet.css') }}">
+</head>
 <html>
+
 <body>
-	Index
-	<br>
-	<a href="/logout">Logout</a>
 
-	<div class="Pane1">
+    <div id="header">
+        <div class="UserSection">
+            <a href="/logout">Logout</a>
+        </div>
+    </div>
 
-	</div>
-	<div class="Pane2">
+    <div id="leftpane">
+        <table id="leftnavtable">
+        	<tbody>
+        	</tbody>
+        </table>
+    </div>
 
-	</div>
+    <div id="centerpane">
+        <table id="centernavtable">
+        	<tbody>
+        	</tbody>
+        </table>
+    </div>
+
+    <div id="rightpane">
+
+    	
+    </div>
+
+    <div id="footer">
+    </div>
+
 </body>
+
 </html>
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script>
-	$(document).ready(function($) {
+
+var navdata = -1;
+var selectedSuperRow = -1;
+var selectedSubRow = -1;
+var selectedCaseRow = -1;
+var selectedCaseID = -1;
+
+function addToLeftNavTable(superID, rowID, rowValue, rowClass) {
+	$('#leftnavtable > tbody:last').append("<tr class='" + rowClass + "'><td class='lnavsuperid' style='display:none'>" + superID + "</td><td class='lnavid' style='display:none'>" + rowID + "</td><td>" + rowValue + "</td></tr>");
+};
+
+function addToCenterNavTable(rowID, rowValue) {
+	$('#centernavtable > tbody:last').append("<tr class='centerRow'><td class='cnavid' style='display:none'>" + rowID + "</td><td>" + rowValue + "</td></tr>");
+};
+
+function setCenterPaneToSection(sectionID) {
+	$("#centernavtable tbody > tr").remove();
+
+	var navsubset;
+	for (var i = 0; i < navdata.length; i++ ) {
+		if (navdata[i]['id'] == selectedSuperRow) {
+			for (var j = 0; j < navdata[i]['subitems'].length; j++) {
+				if (navdata[i]['subitems'][j]['id'] == selectedSubRow) {
+					navsubset = navdata[i]['subitems'][j]
+					break;
+				}
+			};
+			break;
+		};
+	};
+	
+	for (var i = 0; i < navsubset['subitems'].length; i++) {
+		var row = navsubset['subitems'][i];
+		addToCenterNavTable(row['id'], row['value']);
+	};
+};
+
+function setRightPaneToCase(caseID) {
+	$.post("/get/case_brief", {'caseID':caseID}, function(data, status) {
+		var obj = JSON.parse(data);
+		window.briefdata = obj;
+		$('#rightpane').html('<h1>' + obj[0]['name'] + '</h1><p>' + obj[0]['description'] + '</p><img src="' + obj[0]['description_image'] + '" alt="" style="width:150px;"></p><button id="startbutton" type="button">Start Case!</button>');
 	});
+};
+
+$(document).ready(function($) {
+	$.post("/", {}, function(data, status) {
+		var obj = JSON.parse(data);
+		window.navdata = obj;
+		for (var i = 0; i < obj.length; i++) {
+			var row = obj[i];
+			addToLeftNavTable(0, row['id'], row['value'], 'superRow');
+			for (var j = 0; j < row['subitems'].length; j++) {
+				var subrow = row['subitems'][j];
+				addToLeftNavTable(row['id'], subrow['id'], subrow['value'], 'subRow');
+			};
+		};
+		$('#leftnavtable tbody > tr.subRow').hide();
+	});
+
+	$("#centernavtable").on('click', ".centerRow", function() {
+		var thisid = $(this).find('td.cnavid').html();
+		window.selectedCaseRow = thisid;
+		$.post("/get/case_from_navid", {'navID':thisid}, function(data, status) {
+			var obj = JSON.parse(data);
+			window.selectedCaseID = obj[0]['caseID'];
+			setRightPaneToCase(obj[0]['caseID']);
+		});
+    });
+
+    $("#leftnavtable").on('click', ".subRow", function() {
+		var thisid = $(this).find('td.lnavid').html();
+		window.selectedSubRow = thisid;
+		setCenterPaneToSection(thisid);
+    });
+
+    $("#leftnavtable").on('click', ".superRow", function() {
+		var thisid = $(this).find('td.lnavid').html();
+		window.selectedSuperRow = thisid;
+		$('#leftnavtable tbody > tr.subRow').each(function (index) {
+			if (thisid == $(this).find('td.lnavsuperid').html()) {
+				$(this).show();
+			} else { 
+				$(this).hide();
+			};
+		});
+    });
+
+    $("#rightpane").on('click', "#startbutton", function() {
+
+    	window.location = "/pretest?caseID=" + selectedCaseID;
+    });
+});
 </script>
