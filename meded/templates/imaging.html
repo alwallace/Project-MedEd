@@ -13,38 +13,42 @@
         </div>
     </div>
 
-    <div id="leftpane">
-        <table id="leftnavtable">
-        	<tbody>
-                <tr class="caserow">
-                    <td>Pre-Test</td>
-                </tr>
-                <tr class="caserow">
-                    <td>Ordering History</td>
-                </tr>
-                <tr class="caserow">
-                    <td>Imaging</td>
-                </tr>
-                <tr class="caserow">
-                    <td>Report</td>
-                </tr>
-                <tr class="caserow">
-                    <td>Summary</td>
-                </tr>
-                <tr class="caserow">
-                    <td>Post-Test</td>
-                </tr>
-        	</tbody>
-        </table>
-    </div>
+    <div id="body">
+        <div id="leftpane">
+            <table id="leftnavtable">
+            	<tbody>
+                    <tr class="caserow">
+                        <td>Pre-Test</td>
+                    </tr>
+                    <tr class="caserow">
+                        <td>Ordering History</td>
+                    </tr>
+                    <tr class="caserow">
+                        <td>Imaging</td>
+                    </tr>
+                    <tr class="caserow">
+                        <td>Report</td>
+                    </tr>
+                    <tr class="caserow">
+                        <td>Summary</td>
+                    </tr>
+                    <tr class="caserow">
+                        <td>Post-Test</td>
+                    </tr>
+            	</tbody>
+            </table>
+        </div>
 
-    <div id="centerpanenoright">
-        <h1>Imaging</h1>
-        <table id="imagingtable">
-        	<tbody>
-        	</tbody>
-        </table>
-        <div id="imagingexplanation"></div>
+        <div id="centerpanenoright">
+            <h1>Imaging</h1>
+            <table id="imagingtable">
+            	<tbody>
+            	</tbody>
+            </table>
+            <div id="imagingexplanation"></div>
+            <button id="nextButton" type="button">Next!</button>
+        </div>
+
     </div>
 
     <div id="footer">
@@ -83,6 +87,10 @@ $(document).ready(function($) {
         } else if ($(this).children("td").html() == "Post-Test") {
             window.location = "/posttest?caseID=" + selectedCaseID;
         }
+    });
+
+    $("#centerpanenoright").on('click', "#nextButton", function() {
+        window.location = "/report?caseID=" + selectedCaseID;
     });
 
     $.post("/imaging", {'caseID':selectedCaseID}, function(data, status) {

@@ -13,34 +13,37 @@
         </div>
     </div>
 
-    <div id="leftpane">
-        <table id="leftnavtable">
-        	<tbody>
-                <tr class="caserow">
-                    <td>Pre-Test</td>
-                </tr>
-                <tr class="caserow">
-                    <td>Ordering History</td>
-                </tr>
-                <tr class="caserow">
-                    <td>Imaging</td>
-                </tr>
-                <tr class="caserow">
-                    <td>Report</td>
-                </tr>
-                <tr class="caserow">
-                    <td>Summary</td>
-                </tr>
-                <tr class="caserow">
-                    <td>Post-Test</td>
-                </tr>
-        	</tbody>
-        </table>
-    </div>
+    <div id="body">
+        <div id="leftpane">
+            <table id="leftnavtable">
+            	<tbody>
+                    <tr class="caserow">
+                        <td>Pre-Test</td>
+                    </tr>
+                    <tr class="caserow">
+                        <td>Ordering History</td>
+                    </tr>
+                    <tr class="caserow">
+                        <td>Imaging</td>
+                    </tr>
+                    <tr class="caserow">
+                        <td>Report</td>
+                    </tr>
+                    <tr class="caserow">
+                        <td>Summary</td>
+                    </tr>
+                    <tr class="caserow">
+                        <td>Post-Test</td>
+                    </tr>
+            	</tbody>
+            </table>
+        </div>
 
-    <div id="centerpanenoright">
-        <h1>Imaging Report</h1>
-        <p id="imagingexplanation"></p>
+        <div id="centerpanenoright">
+            <h1>Imaging Report</h1>
+            <div id="reportexplanation"></div>
+            <button id="nextButton" type="button">Next!</button>
+        </div>
     </div>
 
     <div id="footer">
@@ -53,6 +56,10 @@
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script>
 selectedCaseID = getParameterByName("caseID");
+
+function loadReportExplanation(explanation) {
+    $('#reportexplanation').html(expalanation);
+};
 
 $(document).ready(function($) {
     $("#leftnavtable").on("click", ".caserow", function() {
@@ -69,6 +76,17 @@ $(document).ready(function($) {
         } else if ($(this).children("td").html() == "Post-Test") {
             window.location = "/posttest?caseID=" + selectedCaseID;
         }
+    });
+
+    $("#centerpanenoright").on('click', "#nextButton", function() {
+        window.location = "/summary?caseID=" + selectedCaseID;
+    });
+
+    $.post("/report", {'caseID':selectedCaseID}, function(data, status) {
+        obj = JSON.parse(data);
+        results = obj[0];
+
+        loadImagingExplanation(results['report']);
     });
 });
 

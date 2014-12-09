@@ -13,37 +13,46 @@
         </div>
     </div>
 
-    <div id="leftpane">
-        <table id="leftnavtable">
-            <tbody>
-                <tr class="caserow">
-                    <td>Pre-Test</td>
-                </tr>
-                <tr class="caserow">
-                    <td>Ordering History</td>
-                </tr>
-                <tr class="caserow">
-                    <td>Imaging</td>
-                </tr>
-                <tr class="caserow">
-                    <td>Report</td>
-                </tr>
-                <tr class="caserow">
-                    <td>Summary</td>
-                </tr>
-                <tr class="caserow">
-                    <td>Post-Test</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+    <div id="body">
+        <div id="leftpane">
+            <table id="leftnavtable">
+                <tbody>
+                    <tr class="caserow">
+                        <td>Pre-Test</td>
+                    </tr>
+                    <tr class="caserow">
+                        <td>Ordering History</td>
+                    </tr>
+                    <tr class="caserow">
+                        <td>Imaging</td>
+                    </tr>
+                    <tr class="caserow">
+                        <td>Report</td>
+                    </tr>
+                    <tr class="caserow">
+                        <td>Summary</td>
+                    </tr>
+                    <tr class="caserow">
+                        <td>Post-Test</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
-    <div id="centerpane">
-    	<h1>Pre-Test</h1>
-        <table id="pretesttable">
-            <tbody>
-            </tbody>
-        </table>
+        <div id="centerpanenoright">
+        	<h1>Pre-Test</h1>
+            <table id="pretesttable">
+                <thead>
+                    <tr>
+                        <th>Question (Click to reveal answer!)</th>
+                        <th>Answer</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+            <button id="nextButton" type="button">Next!</button>
+        </div>
     </div>
 
     <div id="footer">
@@ -57,9 +66,15 @@
 <script>
 var selectedCaseID = getParameterByName("caseID");
 var pretestData;
+var rowCount = 0;
 
 function addQuestionToCenter(question, answer) {
-	$("#pretesttable > tbody:last").append('<tr class="questionrow"><td class="questionCol">' + question + '</td><td class="answerCol">' + answer + '</td></tr>');
+    var rowtype = 'questionRow';
+    if (rowCount % 2 == 1)
+        rowtype = 'questionRowAlt';
+
+	$("#pretesttable > tbody:last").append('<tr class=' + rowtype + '><td class="questionCol">' + question + '</td><td class="answerCol">' + answer + '</td></tr>');
+    rowCount = rowCount + 1;
 };
 
 $(document).ready(function($) {
@@ -79,8 +94,15 @@ $(document).ready(function($) {
         };
     });
 
-    $("#pretesttable").on("click", ".questionrow", function() {
+    $("#pretesttable").on("click", ".questionRow", function() {
     	$(this).children(".answerCol").css("visibility", "visible");
+    });
+    $("#pretesttable").on("click", ".questionRowAlt", function() {
+        $(this).children(".answerCol").css("visibility", "visible");
+    });
+
+    $("#centerpanenoright").on('click', "#nextButton", function() {
+        window.location = "/history?caseID=" + selectedCaseID;
     });
 
     $.post("/pretest", {"caseID":selectedCaseID}, function(data, status) {
@@ -98,5 +120,5 @@ function getParameterByName(name) {
     var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
         results = regex.exec(location.search);
     return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
-}
+};
 </script>

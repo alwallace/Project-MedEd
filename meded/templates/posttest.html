@@ -13,37 +13,40 @@
         </div>
     </div>
 
-    <div id="leftpane">
-        <table id="leftnavtable">
-            <tbody>
-                <tr class="caserow">
-                    <td>Pre-Test</td>
-                </tr>
-                <tr class="caserow">
-                    <td>Ordering History</td>
-                </tr>
-                <tr class="caserow">
-                    <td>Imaging</td>
-                </tr>
-                <tr class="caserow">
-                    <td>Report</td>
-                </tr>
-                <tr class="caserow">
-                    <td>Summary</td>
-                </tr>
-                <tr class="caserow">
-                    <td>Post-Test</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+    <div id="body">
+        <div id="leftpane">
+            <table id="leftnavtable">
+                <tbody>
+                    <tr class="caserow">
+                        <td>Pre-Test</td>
+                    </tr>
+                    <tr class="caserow">
+                        <td>Ordering History</td>
+                    </tr>
+                    <tr class="caserow">
+                        <td>Imaging</td>
+                    </tr>
+                    <tr class="caserow">
+                        <td>Report</td>
+                    </tr>
+                    <tr class="caserow">
+                        <td>Summary</td>
+                    </tr>
+                    <tr class="caserow">
+                        <td>Post-Test</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
-    <div id="centerpane">
-        <h1>Post-Test</h1>
-        <table id="posttesttable">
-            <tbody>
-            </tbody>
-        </table>
+        <div id="centerpanenoright">
+            <h1>Post-Test</h1>
+            <table id="posttesttable">
+                <tbody>
+                </tbody>
+            </table>
+            <button id="doneButton" type="button">Done!</button>
+        </div>
     </div>
 
     <div id="footer">
@@ -81,6 +84,10 @@ $(document).ready(function($) {
 
     $("#posttesttable").on("click", ".questionrow", function() {
         $(this).children(".answerCol").css("visibility", "visible");
+    });
+
+    $("#centerpanenoright").on('click', "#doneButton", function() {
+        window.location = "/";
     });
 
     $.post("/posttest", {"caseID":selectedCaseID}, function(data, status) {

@@ -1,39 +1,68 @@
+#header, #body, #footer { position: absolute; overflow: auto; }
+#header { height: 60px; top: 0; left: 0; right: 0; }
+#body { top: 75px; left: 0; right: 0; bottom: 80px; }
+#footer { height: 60px; left: 0; right: 0; bottom: 0; }
+
 #header {
     background-color:rgb(50,50,50);
-    height:60px;
     color:white;
     text-align:left;
     padding:5px;
     margin:5px;
 }
+
+#body {
+
+}
+
 #leftpane {
     line-height:30px;
     background-color:rgb(100,100,100);
-    height:800px;
-    width:150px;
+    width:175px;
+    height:100%;
     float:left;
     padding:5px; 
     margin:5px;
 }
+
 #centerpane {
-    width:350px;
+    height:100%;
     float:left;
     padding:10px; 
     margin:5px;
-    overflow:scroll;
+    overflow:auto;
 }
+
+#centernavtable td {
+    border: 1px solid #98bf21;
+    padding: 3px 7px 2px 7px;
+}
+
+#centernavtable th {
+    text-align: left;
+    padding-top: 5px;
+    padding-bottom: 4px;
+    background-color: #A7C942;
+    color: #ffffff;
+}
+
+#centernavtable tr.centerRowAlt td {
+    color: #000000;
+    background-color: #EAF2D3;
+}
+
 #centerpanenoright {
-    width:80%;
-    float:left;
+    height:100%;
     padding:10px; 
     margin:5px;
-    overflow:scroll;
+    overflow-y:auto;
+    overflow-x:hidden;
 }
 #rightpane {
     line-height:30px;
     background-color:rgb(100,100,100);
-    height:600px;
-    width:300px;
+    height:100%;
+    width:400px;
     float:right;
     padding:5px; 
     margin:5px;
@@ -43,10 +72,28 @@
     color:white;
     clear:both;
     text-align:right;
-    height:25px;
     padding:5px; 
     margin:5px;
 }
+
+#pretesttable td {
+    border: 1px solid #98bf21;
+    padding: 3px 7px 2px 7px;
+}
+
+#pretesttable th {
+    text-align: left;
+    padding-top: 5px;
+    padding-bottom: 4px;
+    background-color: #A7C942;
+    color: #ffffff;
+}
+
+#pretesttable tr.questionRowAlt td {
+    color: #000000;
+    background-color: #EAF2D3;
+}
+
 
 .superRow {
 	cursor:pointer;
@@ -60,11 +107,24 @@
 	cursor:pointer;
 }
 
+.centerRowAlt {
+    cursor:pointer;
+}
+
 .caserow {
     cursor:pointer;
 }
 
+.questionRow {
+
+}
+.questionCol {
+    width:40%;
+    cursor:pointer;
+}
+
 .answerCol {
+    width:60%;
     visibility:hidden;
 }
 
