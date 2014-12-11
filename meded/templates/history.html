@@ -42,14 +42,23 @@
         <div id="centerpanenoright">
             <table id="centernavtable">
             	<h1>History</h1>
+                <p>Imagine you are in clinic or on the wards and you are ordering a chest x ray on a patient. Look at the following histories given in the "History" information to the radiologist filled out by the ordering physician. Are they helpful to the radiologist? Do they give pertinent information or do they simply fulfill the requirement of having something in the History box.</p> 
                 <table id="historiestable">
+                    <thead>
+                        <tr><th>Given Patient History</th><th>Details</th></tr>
+                    </thead>
                     <tbody>
                     </tbody>
                 </table>
-                <br>
-                <div id="historyexplanation">
+                <p><i>How did you do?</i></p>
+                <hr>
+                <button id="showButton" type="button">Show Explanation</button>
+                <hr>
+                <div id="historyexplanation" style="display:none;">
                 </div>
             </table>
+            <hr>
+            <button id="backButton" type="button">Back</button>
             <button id="nextButton" type="button">Next!</button>
         </div>
     </div>
@@ -65,10 +74,8 @@
 <script>
 selectedCaseID = getParameterByName("caseID");
 
-function loadHistoryTable(tabledata) {
-    for (var i = 0; i < tabledata.length; i++) {
-        $('#historiestable > tbody:last').append('<tr class="historyrow"><td>' + tabledata[i]['history'] + '</td><td class="historyanswercol" style="visibility:hidden;">' + tabledata[i]['history_adequate'] + '</td></tr>');
-    };
+function addHistoryToTable(history, adequate) {
+    $('#historiestable > tbody:last').append('<tr class="historyrow"><td>' + history + '</td><td class="historyanswercol" style="display:none;">' + adequate + '</td></tr>');
 };
 
 function loadHistoryExplanation(explanation) {
@@ -92,21 +99,30 @@ $(document).ready(function($) {
         }
     });
 
+    $("#centerpanenoright").on('click', "#backButton", function() {
+        window.location = "/pretest";
+    });
     $("#centerpanenoright").on('click', "#nextButton", function() {
         window.location = "/imaging?caseID=" + selectedCaseID;
+    });
+
+    $("#centerpanenoright").on('click', "#showButton", function() {
+        $("#historyexplanation").css("display", "block");
     });
 
     $.post("/history", {'caseID':selectedCaseID}, function(data, status) {
         obj = JSON.parse(data);
         results = obj[0];
-        tabledata = [{'history':results['history'], 'history_adequate':results['history_adequate']}];
 
-        loadHistoryTable(tabledata);
+        for (var i = 0; i < results['history'].length; i = i+1) {
+            addHistoryToTable(results['history'][i], results['history_adequate'][i]);
+        };
+        
         loadHistoryExplanation(results['history_explanation']);
     });
 
     $("#historiestable").on("click", ".historyrow", function() {
-        $(this).children(".historyanswercol").css("visibility", "visible");
+        $(this).children(".historyanswercol").css("display", "table-cell");
     });
 });
 

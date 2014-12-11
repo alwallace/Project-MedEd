@@ -1,6 +1,7 @@
 from meded import query_db, commit_db, lastid_db
 from flask import url_for
-
+from meded import constants
+import random
 
 def getNavItems(superID):
 	response = []
@@ -34,7 +35,11 @@ def getCaseHistory(caseID):
 	important_values = ['history', 'history_adequate', 'history_explanation']
 	for v in important_values:
 		row = query_db("SELECT case_value_id, value FROM case_values WHERE case_id=? AND value_type=?", (caseID, v), True)
-		response[0][v] = row[1]
+
+		if v == 'history' or v == 'history_adequate':
+			response[0][v] = row[1].split(';')
+		else: 
+			response[0][v] = row[1]
 	return response
 
 def getCaseImaging(caseID):
@@ -42,9 +47,15 @@ def getCaseImaging(caseID):
 	important_values = ['imaging', 'imaging_normal', 'imaging_explanation']
 	for v in important_values:
 		row = query_db("SELECT case_value_id, value FROM case_values WHERE case_id=? AND value_type=?", (caseID, v), True)
-		response[0][v] = row[1]
+		if v == 'imaging':
+			response[0][v] = row[1].split(';')
+			for i in range(0, len(response[0][v])):
+				response[0][v][i] = url_for('static', filename='images/' + response[0][v][i])
+		elif v == 'imaging_normal':
+			response[0][v] = row[1].split(';')
+		else:
+			response[0][v] = row[1]
 
-	response[0]['imaging'] = url_for('static', filename='images/' + response[0]['imaging'])
 	return response
 
 def getCaseReport(caseID):
@@ -61,4 +72,11 @@ def getCaseSummary(caseID):
 	for v in important_values:
 		row = query_db("SELECT case_value_id, value FROM case_values WHERE case_id=? AND value_type=?", (caseID, v), True)
 		response[0][v] = row[1]
+	return response
+
+def getRandomNormalCXR():
+	normalImageCount = int(query_db('SELECT COUNT(images.image_id) FROM images, image_tags, links_tag_to_image WHERE image_tags.value=? AND image_tags.image_tag_id=links_tag_to_image.image_tag_id AND links_tag_to_image.image_id=images.image_id', (constants.NORMAL_IMAGE_TAG,), True)[0])
+	normalResult = query_db('SELECT images.image_id, images.filename FROM images, image_tags, links_tag_to_image WHERE image_tags.value=? AND image_tags.image_tag_id=links_tag_to_image.image_tag_id AND links_tag_to_image.image_id=images.image_id LIMIT 1 OFFSET ' + str(random.randint(0, normalImageCount - 1)), (constants.NORMAL_IMAGE_TAG,), True)
+
+	response = {"image_id":normalResult[0], "image_loc":url_for('static', filename='images/' + normalResult[1]) }
 	return response

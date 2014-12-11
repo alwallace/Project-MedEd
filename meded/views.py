@@ -94,6 +94,13 @@ def getCaseFromNavIDRoute():
 def getNormalQuizRoute():
 	return json.dumps(quiz.getNormalQuiz())
 
+@app.route('/get/random_normal_cxr', methods=['GET'])
+@login_required
+def getRandomNormalCXRRoute():
+	location = navigator.getRandomNormalCXR()['image_loc']
+	response = "<html><img src='" + location + "' width=100% /></html>"
+	return response
+
 @app.route('/get/case_brief', methods=['POST'])
 @login_required
 def getCaseBriefRoute():

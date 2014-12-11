@@ -41,11 +41,22 @@
 
         <div id="centerpanenoright">
             <h1>Imaging</h1>
+            <p>Look at the images below. These images are either images of a patient with a pulmonary embolism or are normal chest x rays. Click <a target="_blank" href="/get/random_normal_cxr">HERE</a> to pull up a reference of a normal chest x ray. Can you decide find which ones are normal?</p>
+            <p><i>Note: click on the image to make it larger! click on ??? to determine if the image was normal or not!</i></p>
             <table id="imagingtable">
+                <thead>
+                    <tr><th>Image</th><th></th><th>Normal?</th></tr>
+                </thead>
             	<tbody>
             	</tbody>
             </table>
-            <div id="imagingexplanation"></div>
+            <p><i>How did you do?</i></p>
+            <hr>
+            <button id="showButton" type="button">Show Explanation</button>
+            <hr>
+            <div id="imagingexplanation" style="display:none;"></div>
+            <hr>
+            <button id="backButton" type="button">Back</button>
             <button id="nextButton" type="button">Next!</button>
         </div>
 
@@ -62,10 +73,8 @@
 <script>
 selectedCaseID = getParameterByName("caseID");
 
-function loadImagingTable(tabledata) {
-    for (var i = 0; i < tabledata.length; i++) {
-        $('#imagingtable > tbody:last').append('<tr class="imagingrow"><td><img src="' + tabledata[i]['imaging'] + '"></img></td><td class="imaginganswerCol" style="visibility:hidden;">' + tabledata[i]['imaging_normal'] + '</td></tr>');
-    };
+function addImagesToTable(image, normal) {
+    $('#imagingtable > tbody:last').append('<tr class="imagingrow"><td class="imageCol"><a target="_blank" href="' + image + '"><img src="' + image + '" width="500"></img></a></td><td class="showTD">???</td><td class="imaginganswerCol" style="display:none;">' + normal + '</td></tr>');
 };
 
 function loadImagingExplanation(explanation) {
@@ -88,22 +97,29 @@ $(document).ready(function($) {
             window.location = "/posttest?caseID=" + selectedCaseID;
         }
     });
-
+    $("#centerpanenoright").on('click', "#backButton", function() {
+        window.location = "/history";
+    });
     $("#centerpanenoright").on('click', "#nextButton", function() {
         window.location = "/report?caseID=" + selectedCaseID;
+    });
+
+    $("#centerpanenoright").on('click', "#showButton", function() {
+        $("#imagingexplanation").css("display", "block");
+    });
+
+    $("#imagingtable").on('click', ".showTD", function() {
+        $(this).parents(".imagingrow").children(".imaginganswerCol").css("display", "table-cell");
     });
 
     $.post("/imaging", {'caseID':selectedCaseID}, function(data, status) {
         obj = JSON.parse(data);
         results = obj[0];
-        tabledata = [{'imaging':results['imaging'], 'imaging_normal':results['imaging_normal']}];
 
-        loadImagingTable(tabledata);
+        for (var i = 0; i < results['imaging'].length; i = i+1) {
+            addImagesToTable(results['imaging'][i], results['imaging_normal'][i]);
+        };
         loadImagingExplanation(results['imaging_explanation']);
-    });
-
-    $("#imagingtable").on("click", ".imagingrow", function() {
-        $(this).children(".imaginganswerCol").css("visibility", "visible");
     });
 });
 

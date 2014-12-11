@@ -51,6 +51,8 @@
                 <tbody>
                 </tbody>
             </table>
+            <hr>
+            <button id="backButton" type="button">Back</button>
             <button id="nextButton" type="button">Next!</button>
         </div>
     </div>
@@ -73,7 +75,7 @@ function addQuestionToCenter(question, answer) {
     if (rowCount % 2 == 1)
         rowtype = 'questionRowAlt';
 
-	$("#pretesttable > tbody:last").append('<tr class=' + rowtype + '><td class="questionCol">' + question + '</td><td class="answerCol">' + answer + '</td></tr>');
+	$("#pretesttable > tbody:last").append('<tr class=' + rowtype + '><td class="questionCol">' + question + '</td><td class="answerCol"><p>' + answer + '</p></td></tr>');
     rowCount = rowCount + 1;
 };
 
@@ -95,12 +97,15 @@ $(document).ready(function($) {
     });
 
     $("#pretesttable").on("click", ".questionRow", function() {
-    	$(this).children(".answerCol").css("visibility", "visible");
+    	$(this).children(".answerCol").css("display", "table-cell");
     });
     $("#pretesttable").on("click", ".questionRowAlt", function() {
-        $(this).children(".answerCol").css("visibility", "visible");
+        $(this).children(".answerCol").css("display", "table-cell");
     });
 
+    $("#centerpanenoright").on('click', "#backButton", function() {
+        window.location = "/";
+    });
     $("#centerpanenoright").on('click', "#nextButton", function() {
         window.location = "/history?caseID=" + selectedCaseID;
     });

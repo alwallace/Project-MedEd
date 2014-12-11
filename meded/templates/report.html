@@ -40,8 +40,15 @@
         </div>
 
         <div id="centerpanenoright">
-            <h1>Imaging Report</h1>
-            <div id="reportexplanation"></div>
+            <h1>Radiologist's Report</h1>
+            <div id="report"></div>
+            <p><i>What do you think? What kinds of questions does this report answer? What doesn't it tell you?</i></p>
+            <hr>
+            <button id="showButton" type="button">Show Explanation</button>
+            <hr>
+            <div id="reportexplanation" style="display:none;"></div>
+            <hr>
+            <button id="backButton" type="button">Back</button>
             <button id="nextButton" type="button">Next!</button>
         </div>
     </div>
@@ -57,8 +64,12 @@
 <script>
 selectedCaseID = getParameterByName("caseID");
 
+function loadReport(report, adequate) {
+    $('#report').html(report);
+};
+
 function loadReportExplanation(explanation) {
-    $('#reportexplanation').html(expalanation);
+    $('#reportexplanation').html(explanation);
 };
 
 $(document).ready(function($) {
@@ -78,15 +89,24 @@ $(document).ready(function($) {
         }
     });
 
+
+    $("#centerpanenoright").on('click', "#backButton", function() {
+        window.location = "/imaging";
+    });
     $("#centerpanenoright").on('click', "#nextButton", function() {
         window.location = "/summary?caseID=" + selectedCaseID;
+    });
+
+    $("#centerpanenoright").on('click', "#showButton", function() {
+        $("#reportexplanation").css("display", "block");
     });
 
     $.post("/report", {'caseID':selectedCaseID}, function(data, status) {
         obj = JSON.parse(data);
         results = obj[0];
 
-        loadImagingExplanation(results['report']);
+        loadReport(results['report'], results['report_adequate']);
+        loadReportExplanation(results['report_explanation']);
     });
 });
 

@@ -94,6 +94,64 @@
     background-color: #EAF2D3;
 }
 
+#historiestable td {
+    border: 1px solid #98bf21;
+    padding: 3px 7px 2px 7px;
+}
+
+#historiestable th {
+    text-align: left;
+    padding-top: 5px;
+    padding-bottom: 4px;
+    background-color: #A7C942;
+    color: #ffffff;
+}
+
+#historiestable tr.questionRowAlt td {
+    color: #000000;
+    background-color: #EAF2D3;
+}
+
+#imagingtable {
+    width:95%;
+}
+
+#imagingtable td {
+    border: 1px solid #98bf21;
+    padding: 3px 7px 2px 7px;
+}
+
+#imagingtable th {
+    text-align: left;
+    padding-top: 5px;
+    padding-bottom: 4px;
+    background-color: #A7C942;
+    color: #ffffff;
+}
+
+#imagingtable tr.questionRowAlt td {
+    color: #000000;
+    background-color: #EAF2D3;
+}
+
+#posttesttable td {
+    border: 1px solid #98bf21;
+    padding: 3px 7px 2px 7px;
+}
+
+#posttesttable th {
+    text-align: left;
+    padding-top: 5px;
+    padding-bottom: 4px;
+    background-color: #A7C942;
+    color: #ffffff;
+}
+
+#posttesttable tr.questionRowAlt td {
+    color: #000000;
+    background-color: #EAF2D3;
+}
+
 
 .superRow {
 	cursor:pointer;
@@ -125,7 +183,7 @@
 
 .answerCol {
     width:60%;
-    visibility:hidden;
+    display:none;
 }
 
 .historyrow {
@@ -134,4 +192,24 @@
 
 .imagingrow {
     cursor:pointer;
+    width:100%;
+}
+
+.imageCol {
+    width:500px;
+}
+
+.imaginganswerCol {
+}
+
+#backButton {
+    float:left;
+}
+
+#nextButton {
+    float:right;
+}
+
+#doneButton {
+    float:right;
 }

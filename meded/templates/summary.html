@@ -42,7 +42,9 @@
         <div id="centerpanenoright">
             <h1>Summary</h1>
             <div id="summaryexplanation"></div>
-
+            <p><i>So, think you've learned something? Let's see.</i></p>
+            <hr>
+            <button id="backButton" type="button">Back</button>
             <button id="nextButton" type="button">Next!</button>
         </div>
     </div>
@@ -59,7 +61,7 @@
 selectedCaseID = getParameterByName("caseID");
 
 function loadSummaryExplanation(explanation) {
-    $(".summaryexplanation").html(explanation);
+    $("#summaryexplanation").html(explanation);
 };
 
 $(document).ready(function($) {
@@ -79,6 +81,9 @@ $(document).ready(function($) {
         }
     });
 
+    $("#centerpanenoright").on('click', "#backButton", function() {
+        window.location = "/report";
+    });
     $("#centerpanenoright").on('click', "#nextButton", function() {
         window.location = "/posttest?caseID=" + selectedCaseID;
     });

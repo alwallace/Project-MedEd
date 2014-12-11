@@ -42,9 +42,17 @@
         <div id="centerpanenoright">
             <h1>Post-Test</h1>
             <table id="posttesttable">
+                <thead>
+                    <tr>
+                        <th>Question (Click to reveal answer!)</th>
+                        <th>Answer</th>
+                    </tr>
+                </thead>
                 <tbody>
                 </tbody>
             </table>
+            <hr>
+            <button id="backButton" type="button">Back</button>
             <button id="doneButton" type="button">Done!</button>
         </div>
     </div>
@@ -83,9 +91,15 @@ $(document).ready(function($) {
     });
 
     $("#posttesttable").on("click", ".questionrow", function() {
-        $(this).children(".answerCol").css("visibility", "visible");
+        $(this).children(".answerCol").css("display", "table-cell");
+    });
+    $("#posttesttable").on("click", ".questionrowAlt", function() {
+        $(this).children(".answerCol").css("display", "table-cell");
     });
 
+    $("#centerpanenoright").on('click', "#backButton", function() {
+        window.location = "/summary";
+    });
     $("#centerpanenoright").on('click', "#doneButton", function() {
         window.location = "/";
     });
