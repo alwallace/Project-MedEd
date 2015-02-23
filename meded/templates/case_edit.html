@@ -1,0 +1,26 @@
+<table border="1" cellpadding="1" cellspacing="1" style="width:700px">
+	<thead>
+		<tr>
+			<th scope="col">Value</th>
+			<th scope="col">HTML Data</th>
+		</tr>
+	</thead>
+	<tbody>
+	</tbody>
+</table>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js">
+
+var variables = ['test_question_answer', 'history', 'history_adequate', 'history_explanation', 'imaging', 'imaging_normal', 'imaging_explanation', 'report', 'report_adequate', 'report_explanation', 'summary'];
+
+$(document).ready(function($) {
+
+});
+
+function getParameterByName(name) {
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(location.search);
+    return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+}
+</script>

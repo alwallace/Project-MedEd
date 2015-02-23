@@ -80,3 +80,25 @@ def getRandomNormalCXR():
 
 	response = {"image_id":normalResult[0], "image_loc":url_for('static', filename='images/' + normalResult[1]) }
 	return response
+
+def createCase(navItemSuperID):
+	name = "New Case"
+	description = "New case description"
+	descriptionImage = "newcase.jpg"
+
+	commit_db("INSERT INTO nav_items (case_id, nav_item, nav_item_super_id) VALUES (?,?,?)")
+	navItemID = lastid_db()
+
+	commit_db("INSERT INTO cases (nav_item_id, nav_item_id, name, description, description_image) VALUES (?,?,?,?)", (navItemDB, navItemSuperID, name, description, descriptionImage))
+
+
+	reponse = {"case_id":lastID}
+	return response
+
+def deleteCase(caseID):
+	commit_db("DELETE FROM nav_items WHERE case_id=?", (caseID,))
+	commit_db("DELETE FROM cases WHERE case_id=?", (caseID,))
+	commit_db("DELETE FROM case_values WHERE case_id=?", (caseID,))
+
+	response = {'status':'done'}
+	return response

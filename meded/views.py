@@ -130,3 +130,13 @@ def getCaseReportRoute():
 @login_required
 def getCaseSummaryRoute():
 	return json.dumps(navigator.getCaseSummary(request.form['caseID']))
+
+@app.route('/new/case', methods=['GET', 'POST'])
+@login_required
+def createCaseRoute():
+	return json.dumps(navigator.createCase())
+
+@app.route('/delete/case', methods=['POST'])
+@login_required
+def deleteCaseRoute():
+	return json.dumps(navigator.deleteCase(request.form['caseID']))
