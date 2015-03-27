@@ -19,7 +19,7 @@ def getCaseFromNavID(navID):
 def getCaseBrief(caseID):
 	response = []
 	row = query_db("SELECT name, description, description_image FROM cases WHERE case_id=?", (caseID,), True)
-	response.append({'name':row[0], 'description':row[1], 'description_image':row[2]})
+	response.append({'name':row[0], 'description':row[1], 'description_image':url_for('static', filename='images/' + row[2])})
 	return response
 
 def getCaseTest(caseID):
