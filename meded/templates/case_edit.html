@@ -1,4 +1,24 @@
-<table border="1" cellpadding="1" cellspacing="1" style="width:700px">
+<!DOCTYPE HTML>
+<html>
+<body>
+
+<table id="caseListTable" border="1" cellpadding="1" cellspacing="1" style="width:900px">
+	<thead>
+		<tr>
+			<th scope="col">Case ID</th>
+			<th scope="col">Name</th>
+			<th scope="col">Description</th>
+		</tr>
+	</thead>
+	<tbody>
+	</tbody>
+</table>
+
+<input type="text" id="caseIDTextbox">
+<button type="button" id="submitCaseIDButton">Select Case ID</button>
+<br/>
+
+<table id="caseInfoTable" border="1" cellpadding="1" cellspacing="1" style="width:900px">
 	<thead>
 		<tr>
 			<th scope="col">Value</th>
@@ -8,13 +28,56 @@
 	<tbody>
 	</tbody>
 </table>
+<button type="button" id="saveCaseButton">Save Case</button>
+</body>
+</html>
 
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script type="text/javascript">
 
 var variables = ['test_question_answer', 'history', 'history_adequate', 'history_explanation', 'imaging', 'imaging_normal', 'imaging_explanation', 'report', 'report_adequate', 'report_explanation', 'summary'];
 
-$(document).ready(function($) {
+var selectedCaseID = -1;
 
+function addRow(cvID, value, data) {
+	$('#caseInfoTable > tbody:last').append("<tr>"
+		+ "<td>" + value + "</td>"
+		+ "<td><textarea rows=\"7\" cols=\"100\" id=\"" + cvID + "Row\"></td>"
+		+ "</tr>");
+	$('#' + cvID + 'Row').val(data);
+};
+
+$(document).ready(function($) {
+	$.get("/get/case_list", function(data, status) {
+		var obj = JSON.parse(data);
+		$.each(obj, function(i, item) {
+			$('#caseListTable > tbody:last').append("<tr>"
+				+ "<td>" + item.caseID + "</td>"
+				+ "<td>" + item.name + "</td>"
+				+ "<td>" + item.description + "</td>"
+				+ "</tr>");
+		});
+	});
+
+	$("#submitCaseIDButton").click(function() {
+		$.post("/get/caseInfo", {'caseID':$("#caseIDTextbox").val()}, function(data, status) {
+			var obj = JSON.parse(data);
+			$.each(obj, function(i, item) {
+				addRow(item.caseValueID, item.value, item.data);
+			});
+		});
+		window.selectedCaseID = $("#caseIDTextbox").val();
+	});
+
+	$("#saveCaseButton").click(function() {
+		var valueList = [];
+		$.each($("#caseInfoTable > tbody > tr"), function(i, item) {
+			valueList.push({'caseValueID':item.children("textarea").attr('id'), 'value':item.children("textarea").val()});
+		});
+		$.post("/edit/case", {"caseID":selectedCaseID, "caseValues":valueList}, function(data, status) {
+			var obj = JSON.parse(data);
+		});
+	});
 });
 
 function getParameterByName(name) {

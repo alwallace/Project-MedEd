@@ -10,10 +10,24 @@ def getNavItems(superID):
 		response.append({'id':row[0], 'value':row[1], 'subitems':getNavItems(row[0])})
 	return response
 
+def getCaseList():
+	response = []
+	rows = query_db("SELECT case_id, name, description FROM cases")
+	for row in rows:
+		response.append({'caseID':row[0], 'name':row[1], 'description':row[2]})
+	return response
+
 def getCaseFromNavID(navID):
 	response = []
 	row = query_db("SELECT case_id FROM cases WHERE nav_item_id=?", (navID,), True)
 	response.append({'caseID':row[0]})
+	return response
+
+def getCaseInfo(caseID):
+	response = []
+	rows = query_db("SELECT case_value_id, value_type, value FROM case_values WHERE case_id=?", (caseID,))
+	for row in rows:
+		response.append({'caseValueID':row[0], 'value':row[1], 'data':row[2]})
 	return response
 
 def getCaseBrief(caseID):

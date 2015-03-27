@@ -1,4 +1,4 @@
-from meded import app, login, user, quiz, constants, navigator
+from meded import app, login, user, constants, navigator
 from flask import request, render_template, flash, redirect, url_for
 from flask.ext.login import login_required, login_user, logout_user, current_user
 import json
@@ -78,21 +78,41 @@ def loginRoute():
 def logoutRoute():
 	logout_user()
 	return redirect('/login')
-
-@app.route('/quiz/normals', methods=['GET'])
+####
+# /EDIT
+####
+@app.route('/edit')
 @login_required
-def quizNormalsRoute():
-	return render_template("quiz_normals.html")
+def editRoute():
+	return render_template("edit_index.html")
+
+@app.route('/edit/case', methods=['GET', 'POST'])
+@login_required
+def editCaseRoute():
+	if request.method == 'GET':
+		return render_template("case_edit.html")
+	elif request.method == 'POST':
+		caseID = request.args.get("caseID")
+		caseValues = json.loads(request.args.get("caseID"), request.args.get("caseValues"))
+		return json.dumps(editor.setCase(caseID, caseValues))
+
+####
+# /GET
+####
+@app.route('/get/case_list')
+@login_required
+def getCaseListRoute():
+	return json.dumps(navigator.getCaseList())
 
 @app.route('/get/case_from_navid', methods=['POST'])
 @login_required
 def getCaseFromNavIDRoute():
 	return json.dumps(navigator.getCaseFromNavID(request.form['navID']))
 
-@app.route('/get/normal_quiz', methods=['GET'])
+@app.route('/get/caseInfo', methods=['POST'])
 @login_required
-def getNormalQuizRoute():
-	return json.dumps(quiz.getNormalQuiz())
+def getCaseInfoRoute():
+	return json.dumps(navigator.getCaseInfo(request.form['caseID']))
 
 @app.route('/get/random_normal_cxr', methods=['GET'])
 @login_required
