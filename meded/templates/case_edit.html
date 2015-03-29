@@ -1,0 +1,133 @@
+<!DOCTYPE HTML>
+<html>
+<body>
+
+<table id="caseListTable" border="1" cellpadding="1" cellspacing="1" style="width:900px">
+	<thead>
+		<tr>
+			<th scope="col">Case ID</th>
+			<th scope="col">Name</th>
+			<th scope="col">Description</th>
+		</tr>
+	</thead>
+	<tbody>
+	</tbody>
+</table>
+
+<button type="button" id="createCaseButton">Create New Case</button>
+<p>Case ID:<input type="text" id="caseIDTextbox"></p>
+<button type="button" id="submitCaseIDButton">Select Case ID</button>
+<button type="button" id="deleteCaseButton">Delete Case ID</button>
+
+<p>Case Name<input type="text" id="caseNameText" size="100"></p>
+<p>Case Description<textarea rows="5" cols="100" id="caseDescriptionText"></textarea></p>
+<p>Case Image<input type="text" id="caseImageText" size="100"></p>
+<p>Case Nav Name<input type="text" id="caseNavNameText" size="100"></p>
+<p>Case Nav Super ID<input type="text" id="caseNavSuperIDText" size="100"></p>
+
+<table id="caseInfoTable" border="1" cellpadding="1" cellspacing="1" style="width:900px">
+	<thead>
+		<tr>
+			<th scope="col">Value</th>
+			<th scope="col">HTML Data</th>
+		</tr>
+	</thead>
+	<tbody>
+	</tbody>
+</table>
+<button type="button" id="saveCaseButton">Save Case</button>
+</body>
+</html>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script type="text/javascript">
+
+var variables = ['test_question_answer', 'history', 'history_adequate', 'history_explanation', 'imaging', 'imaging_normal', 'imaging_explanation', 'report', 'report_adequate', 'report_explanation', 'summary'];
+
+var selectedCaseID = -1;
+
+function reloadCases() {
+	$('#caseListTable > tbody > tr').remove();
+	$.get("/get/case_list", function(data, status) {
+		var obj = JSON.parse(data);
+		
+		$.each(obj, function(i, item) {
+			$('#caseListTable > tbody:last').append("<tr>"
+				+ "<td>" + item.caseID + "</td>"
+				+ "<td>" + item.name + "</td>"
+				+ "<td>" + item.description + "</td>"
+				+ "</tr>");
+		});
+	});
+};
+
+function addRow(cvID, value, data) {
+	$('#caseInfoTable > tbody:last').append("<tr>"
+		+ "<td>" + value + "</td>"
+		+ "<td><textarea rows=\"7\" cols=\"100\" id=\"" + cvID + "Row\"></textarea></td>"
+		+ "</tr>");
+	$('#' + cvID + 'Row').val(data);
+};
+
+$(document).ready(function($) {
+	reloadCases();
+
+	$("#createCaseButton").click(function() {
+		$.post("/edit/createCase", {}, function(data, status) {
+			var obj = JSON.parse(data);
+			reloadCases();
+		});
+	});
+
+	$("#deleteCaseButton").click(function() {
+		$.post("/edit/deleteCase", {'caseID':$("#caseIDTextbox").val()}, function(data, status) {
+			var obj = JSON.parse(data);
+			reloadCases();
+		});
+		window.selectedCaseID = -1;
+	});
+
+	$("#submitCaseIDButton").click(function() {
+		$.post("/get/caseInfo", {'caseID':$("#caseIDTextbox").val()}, function(data, status) {
+			var obj = JSON.parse(data);
+			$("#caseNameText").val(obj['name']);
+			$("#caseDescriptionText").val(obj['description']);
+			$("#caseImageText").val(obj['image']);
+			$("#caseNavNameText").val(obj['navName']);
+			$("#caseNavSuperIDText").val(obj['navSuperID']);
+
+			$('#caseInfoTable > tbody > tr').remove();
+			$.each(obj['values'], function(i, item) {
+				addRow(item.caseValueID, item.value, item.data);
+			});
+		});
+		window.selectedCaseID = $("#caseIDTextbox").val();
+	});
+
+	$("#saveCaseButton").click(function() {
+		var valueList = [];
+		$("#caseInfoTable > tbody > tr").each(function(i) {
+			valueList.push({'caseValueID':$(this).find("textarea").attr('id').slice(0,-3), 'value':$(this).find("textarea").val()});
+		});
+		var propertyList = {};
+		propertyList['caseName'] = ($("#caseNameText").val());
+		propertyList['caseDescription'] = ($("#caseDescriptionText").val());
+		propertyList['caseImage'] = ($("#caseImageText").val());
+		propertyList['caseNavName'] = ($("#caseNavNameText").val());
+		propertyList['caseNavSuperID'] = ($("#caseNavSuperIDText").val());
+
+		$.post("/edit/case", {"caseID":selectedCaseID, "caseValues":JSON.stringify(valueList), "caseProperties":JSON.stringify(propertyList)}, function(data, status) {
+			var obj = JSON.parse(data);
+			reloadCases();
+			alert(obj['status']);
+		});
+	});
+});
+
+function getParameterByName(name) {
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(location.search);
+    return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+}
+</script>
