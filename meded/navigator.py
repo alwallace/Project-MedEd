@@ -10,10 +10,34 @@ def getNavItems(superID):
 		response.append({'id':row[0], 'value':row[1], 'subitems':getNavItems(row[0])})
 	return response
 
+def getCaseList():
+	response = []
+	rows = query_db("SELECT case_id, name, description FROM cases")
+	for row in rows:
+		response.append({'caseID':row[0], 'name':row[1], 'description':row[2]})
+	return response
+
 def getCaseFromNavID(navID):
 	response = []
 	row = query_db("SELECT case_id FROM cases WHERE nav_item_id=?", (navID,), True)
 	response.append({'caseID':row[0]})
+	return response
+
+def getCaseInfo(caseID):
+	response = {}
+	name, desc, image = query_db("SELECT name, description, description_image FROM cases WHERE case_id=?", (caseID,), True)
+	superID, navName = query_db("SELECT nav_item_super_id, nav_item FROM nav_items WHERE case_id=?", (caseID,),True)
+	response['name']=name
+	response['description']=desc
+	response['description_image']=image
+	response['navSuperID']=superID
+	response['navName']=navName
+
+	rows = query_db("SELECT case_value_id, value_type, value FROM case_values WHERE case_id=?", (caseID,))
+	values = []
+	for row in rows:
+		values.append({'caseValueID':row[0], 'value':row[1], 'data':row[2]})
+	response['values'] = values
 	return response
 
 def getCaseBrief(caseID):
@@ -79,26 +103,4 @@ def getRandomNormalCXR():
 	normalResult = query_db('SELECT images.image_id, images.filename FROM images, image_tags, links_tag_to_image WHERE image_tags.value=? AND image_tags.image_tag_id=links_tag_to_image.image_tag_id AND links_tag_to_image.image_id=images.image_id LIMIT 1 OFFSET ' + str(random.randint(0, normalImageCount - 1)), (constants.NORMAL_IMAGE_TAG,), True)
 
 	response = {"image_id":normalResult[0], "image_loc":url_for('static', filename='images/' + normalResult[1]) }
-	return response
-
-def createCase(navItemSuperID):
-	name = "New Case"
-	description = "New case description"
-	descriptionImage = "newcase.jpg"
-
-	commit_db("INSERT INTO nav_items (case_id, nav_item, nav_item_super_id) VALUES (?,?,?)")
-	navItemID = lastid_db()
-
-	commit_db("INSERT INTO cases (nav_item_id, nav_item_id, name, description, description_image) VALUES (?,?,?,?)", (navItemDB, navItemSuperID, name, description, descriptionImage))
-
-
-	reponse = {"case_id":lastID}
-	return response
-
-def deleteCase(caseID):
-	commit_db("DELETE FROM nav_items WHERE case_id=?", (caseID,))
-	commit_db("DELETE FROM cases WHERE case_id=?", (caseID,))
-	commit_db("DELETE FROM case_values WHERE case_id=?", (caseID,))
-
-	response = {'status':'done'}
 	return response
