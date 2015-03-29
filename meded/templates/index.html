@@ -127,6 +127,16 @@ $(document).ready(function($) {
 		});
     });
 
+    $("#centernavtable").on('click', ".centerRowAlt", function() {
+		var thisid = $(this).find('td.cnavid').html();
+		window.selectedCaseRow = thisid;
+		$.post("/get/case_from_navid", {'navID':thisid}, function(data, status) {
+			var obj = JSON.parse(data);
+			window.selectedCaseID = obj[0]['caseID'];
+			setRightPaneToCase(obj[0]['caseID']);
+		});
+    });
+
     $("#leftnavtable").on('click', ".subRow", function() {
 		var thisid = $(this).find('td.lnavid').html();
 		window.selectedSubRow = thisid;

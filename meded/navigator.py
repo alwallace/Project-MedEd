@@ -19,7 +19,7 @@ def getCaseList():
 
 def getCaseFromNavID(navID):
 	response = []
-	row = query_db("SELECT case_id FROM cases WHERE nav_item_id=?", (navID,), True)
+	row = query_db("SELECT cases.case_id FROM cases, nav_items WHERE nav_items.nav_item_id=? AND nav_items.case_id=cases.case_id", (navID,), True)
 	response.append({'caseID':row[0]})
 	return response
 
