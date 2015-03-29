@@ -1,18 +1,17 @@
-#header, #body, #footer { position: absolute; overflow: auto; }
+#header, #body, #footer { position: absolute; }
 #header { height: 60px; top: 0; left: 0; right: 0; }
-#body { top: 75px; left: 0; right: 0; bottom: 80px; }
+#body { top: 70px; left: 0; right: 0; bottom: 70px; }
 #footer { height: 60px; left: 0; right: 0; bottom: 0; }
 
 #header {
     background-color:rgb(50,50,50);
-    color:white;
     text-align:left;
     padding:5px;
-    margin:5px;
 }
 
 #body {
-
+    overflow-y: hidden;
+    margin:5px;
 }
 
 #leftpane {
@@ -22,7 +21,6 @@
     height:100%;
     float:left;
     padding:5px; 
-    margin:5px;
 }
 
 #centerpane {
@@ -53,10 +51,9 @@
 
 #centerpanenoright {
     height:100%;
-    padding:10px; 
-    margin:5px;
+    border:5px solid navy;
     overflow-y:auto;
-    overflow-x:hidden;
+    overflow-x:auto;
 }
 #rightpane {
     line-height:30px;
@@ -73,7 +70,6 @@
     clear:both;
     text-align:right;
     padding:5px; 
-    margin:5px;
 }
 
 #pretesttable td {
