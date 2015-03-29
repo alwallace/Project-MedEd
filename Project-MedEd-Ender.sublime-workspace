@@ -265,6 +265,10 @@
 		"side_bar_visible": false,
 		"status_bar_visible": false
 	},
+	"expanded_folders":
+	[
+		"/J/Workspace/Project-MedEd"
+	],
 	"file_history":
 	[
 		"/Users/alex/Workspace/GitHub/Project-MedEd/meded/__init__.py",
@@ -398,7 +402,7 @@
 	],
 	"find":
 	{
-		"height": 35.0
+		"height": 21.0
 	},
 	"find_in_files":
 	{
@@ -613,7 +617,7 @@
 	],
 	"incremental_find":
 	{
-		"height": 0.0
+		"height": 21.0
 	},
 	"input":
 	{
@@ -650,10 +654,10 @@
 	{
 		"height": 0.0
 	},
-	"project": "ProjectMedEd.sublime-project",
+	"project": "Project-MedEd-Ender.sublime-project",
 	"replace":
 	{
-		"height": 62.0
+		"height": 38.0
 	},
 	"save_all_on_build": true,
 	"select_file":
