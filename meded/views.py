@@ -1,4 +1,4 @@
-from meded import app, login, user, constants, navigator
+from meded import app, login, user, constants, navigator, editor
 from flask import request, render_template, flash, redirect, url_for
 from flask.ext.login import login_required, login_user, logout_user, current_user
 import json
@@ -92,9 +92,21 @@ def editCaseRoute():
 	if request.method == 'GET':
 		return render_template("case_edit.html")
 	elif request.method == 'POST':
-		caseID = request.args.get("caseID")
-		caseValues = json.loads(request.args.get("caseID"), request.args.get("caseValues"))
-		return json.dumps(editor.setCase(caseID, caseValues))
+		print(request.form)
+		caseID = request.form["caseID"]
+		caseValues = json.loads(request.form["caseValues"])
+		caseProperties = json.loads(request.form["caseProperties"])
+		return json.dumps(editor.editCaseValues(caseID, caseValues, caseProperties))
+
+@app.route('/edit/createCase', methods=['POST'])
+@login_required
+def createCaseRoute():
+	return json.dumps(editor.createCase())
+
+@app.route('/edit/deleteCase', methods=['POST'])
+@login_required
+def deleteCaseRoute():
+	return json.dumps(editor.deleteCase(request.form['caseID']))
 
 ####
 # /GET
@@ -150,13 +162,3 @@ def getCaseReportRoute():
 @login_required
 def getCaseSummaryRoute():
 	return json.dumps(navigator.getCaseSummary(request.form['caseID']))
-
-@app.route('/new/case', methods=['GET', 'POST'])
-@login_required
-def createCaseRoute():
-	return json.dumps(navigator.createCase())
-
-@app.route('/delete/case', methods=['POST'])
-@login_required
-def deleteCaseRoute():
-	return json.dumps(navigator.deleteCase(request.form['caseID']))
