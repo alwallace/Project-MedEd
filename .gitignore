@@ -45,3 +45,5 @@ Temporary Items
 *.pyc
 
 meded/__pycache__/
+
+*.sublime-workspace

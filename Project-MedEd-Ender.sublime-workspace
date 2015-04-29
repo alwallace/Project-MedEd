@@ -239,11 +239,24 @@
 	},
 	"buffers":
 	[
+		{
+			"file": "Project-MedEd.sublime-project",
+			"settings":
+			{
+				"buffer_size": 73,
+				"line_ending": "Windows"
+			}
+		}
 	],
 	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
 	"command_palette":
 	{
 		"height": 0.0,
+		"last_filter": "",
 		"selected_items":
 		[
 		],
@@ -267,10 +280,16 @@
 	},
 	"expanded_folders":
 	[
-		"/J/Workspace/Project-MedEd"
+		"/J/Workspace/Project-MedEd",
+		"/J/Workspace/Project-MedEd/meded",
+		"/J/Workspace/Project-MedEd/meded/extra",
+		"/J/Workspace/Project-MedEd/meded/static",
+		"/J/Workspace/Project-MedEd/meded/templates"
 	],
 	"file_history":
 	[
+		"/J/Workspace/Project-MedEd/RUNME-Windows.bat",
+		"/J/Workspace/Project-MedEd/meded/templates/report.html",
 		"/Users/alex/Workspace/GitHub/Project-MedEd/meded/__init__.py",
 		"/Users/alex/Workspace/GitHub/Project-MedEd/meded/user.py",
 		"/Users/alex/Workspace/GitHub/Project-MedEd/meded/quiz.py",
@@ -396,9 +415,7 @@
 		"/Users/alex/Dropbox/Documents/UACOM/Neuro/Chapter 26 Notes.txt",
 		"/Users/alex/Dropbox/Documents/UACOM/Neuro/Chatper 25 Notes.txt",
 		"/Users/alex/Dropbox/Documents/UACOM/Neuro/Chapter 24 Notes.txt",
-		"/Users/alex/Dropbox/Documents/UACOM/Neuro/Chapter 23 Notes.txt",
-		"/Users/alex/Dropbox/Documents/UACOM/Neuro/Chapter 22 Notes.txt",
-		"/Users/alex/Dropbox/Documents/UACOM/Neuro/Chapter 21 Notes.txt"
+		"/Users/alex/Dropbox/Documents/UACOM/Neuro/Chapter 23 Notes.txt"
 	],
 	"find":
 	{
@@ -610,8 +627,37 @@
 	"groups":
 	[
 		{
+			"selected": 0,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "Project-MedEd.sublime-project",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 73,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
 			]
 		}
 	],
@@ -654,6 +700,7 @@
 	{
 		"height": 0.0
 	},
+	"pinned_build_system": "",
 	"project": "Project-MedEd-Ender.sublime-project",
 	"replace":
 	{
@@ -663,6 +710,7 @@
 	"select_file":
 	{
 		"height": 0.0,
+		"last_filter": "",
 		"selected_items":
 		[
 			[
@@ -679,6 +727,7 @@
 	"select_project":
 	{
 		"height": 0.0,
+		"last_filter": "",
 		"selected_items":
 		[
 		],
@@ -687,6 +736,7 @@
 	"select_symbol":
 	{
 		"height": 0.0,
+		"last_filter": "",
 		"selected_items":
 		[
 		],
@@ -700,7 +750,7 @@
 	"show_open_files": true,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 125.0,
+	"side_bar_width": 293.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{
