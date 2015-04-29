@@ -18,10 +18,13 @@
             <table id="leftnavtable">
             	<tbody>
                     <tr class="caserow">
+                        <td><h2><u>Home<u></h2></td>
+                    </tr>
+                    <tr class="caserow">
                         <td>Pre-Test</td>
                     </tr>
                     <tr class="caserow">
-                        <td>Ordering History</td>
+                        <td>Patient History</td>
                     </tr>
                     <tr class="caserow">
                         <td>Imaging</td>
@@ -30,7 +33,7 @@
                         <td>Report</td>
                     </tr>
                     <tr class="caserow">
-                        <td>Summary</td>
+                        <td><b>Summary</b></td>
                     </tr>
                     <tr class="caserow">
                         <td>Post-Test</td>
@@ -41,11 +44,16 @@
 
         <div id="centerpanenoright">
             <h1>Summary</h1>
+            <hr>
+            <button id="backButton" type="button">Back</button>
+            <button id="nextButton" type="button">Next!</button>
+            <br><hr>
             <div id="summaryexplanation"></div>
             <p><i>So, think you've learned something? Let's see.</i></p>
             <hr>
             <button id="backButton" type="button">Back</button>
             <button id="nextButton" type="button">Next!</button>
+            <br><hr>
         </div>
     </div>
     
@@ -68,7 +76,7 @@ $(document).ready(function($) {
     $("#leftnavtable").on("click", ".caserow", function() {
         if ($(this).children("td").html() == "Pre-Test") {
             window.location = "/pretest?caseID=" + selectedCaseID;
-        } else if ($(this).children("td").html() == "Ordering History") {
+        } else if ($(this).children("td").html() == "Patient History") {
             window.location = "/history?caseID=" + selectedCaseID;
         } else if ($(this).children("td").html() == "Imaging") {
             window.location = "/imaging?caseID=" + selectedCaseID;
@@ -78,11 +86,13 @@ $(document).ready(function($) {
             window.location = "/summary?caseID=" + selectedCaseID;
         } else if ($(this).children("td").html() == "Post-Test") {
             window.location = "/posttest?caseID=" + selectedCaseID;
-        }
+        } else if ($(this).children("td").html().indexOf("Home") > -1) {
+            window.location = "/";
+        };
     });
 
     $("#centerpanenoright").on('click', "#backButton", function() {
-        window.location = "/report";
+        window.location = "/report?caseID=" + selectedCaseID;
     });
     $("#centerpanenoright").on('click', "#nextButton", function() {
         window.location = "/posttest?caseID=" + selectedCaseID;

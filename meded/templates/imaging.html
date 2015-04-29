@@ -18,13 +18,16 @@
             <table id="leftnavtable">
             	<tbody>
                     <tr class="caserow">
+                        <td><h2><u>Home<u></h2></td>
+                    </tr>
+                    <tr class="caserow">
                         <td>Pre-Test</td>
                     </tr>
                     <tr class="caserow">
-                        <td>Ordering History</td>
+                        <td>Patient History</td>
                     </tr>
                     <tr class="caserow">
-                        <td>Imaging</td>
+                        <td><b>Imaging</b></td>
                     </tr>
                     <tr class="caserow">
                         <td>Report</td>
@@ -41,8 +44,13 @@
 
         <div id="centerpanenoright">
             <h1>Imaging</h1>
-            <p>Look at the images below. These images are either images of a patient with a pulmonary embolism or are normal chest x rays. Click <a target="_blank" href="/get/random_normal_cxr">HERE</a> to pull up a reference of a normal chest x ray. Can you decide find which ones are normal?</p>
-            <p><i>Note: click on the image to make it larger! click on ??? to determine if the image was normal or not!</i></p>
+            <hr>
+            <button id="backButton" type="button">Back</button>
+            <button id="nextButton" type="button">Next!</button>
+            <br><hr>
+            <p>Look at the images below. These images are either images of a patient with a finding or are normal chest x rays. Click <a target="_blank" href="/get/random_normal_cxr">HERE</a> to pull up a reference of a normal chest x ray. Can you decide find which ones are normal?</p>
+            <p><i>Hints: click on the image to make it larger! Click on ??? to determine if the image was normal or not!</i></p>
+            <p><i>Normal chest x-rays (PA and Lateral): <a target="_blank" href="/get/random_normal_cxr">HERE</a>, refresh to get a new image.</i></p>
             <table id="imagingtable">
                 <thead>
                     <tr><th>Image</th><th></th><th>Normal?</th></tr>
@@ -58,6 +66,7 @@
             <hr>
             <button id="backButton" type="button">Back</button>
             <button id="nextButton" type="button">Next!</button>
+            <br><hr>
         </div>
 
     </div>
@@ -85,7 +94,7 @@ $(document).ready(function($) {
     $("#leftnavtable").on("click", ".caserow", function() {
         if ($(this).children("td").html() == "Pre-Test") {
             window.location = "/pretest?caseID=" + selectedCaseID;
-        } else if ($(this).children("td").html() == "Ordering History") {
+        } else if ($(this).children("td").html() == "Patient History") {
             window.location = "/history?caseID=" + selectedCaseID;
         } else if ($(this).children("td").html() == "Imaging") {
             window.location = "/imaging?caseID=" + selectedCaseID;
@@ -95,10 +104,12 @@ $(document).ready(function($) {
             window.location = "/summary?caseID=" + selectedCaseID;
         } else if ($(this).children("td").html() == "Post-Test") {
             window.location = "/posttest?caseID=" + selectedCaseID;
-        }
+        } else if ($(this).children("td").html().indexOf("Home") > -1) {
+            window.location = "/";
+        };
     });
     $("#centerpanenoright").on('click', "#backButton", function() {
-        window.location = "/history";
+        window.location = "/history?caseID=" + selectedCaseID;
     });
     $("#centerpanenoright").on('click', "#nextButton", function() {
         window.location = "/report?caseID=" + selectedCaseID;
@@ -106,6 +117,7 @@ $(document).ready(function($) {
 
     $("#centerpanenoright").on('click', "#showButton", function() {
         $("#imagingexplanation").css("display", "block");
+        $("#centerpanenoright").scrollTop($("#centerpanenoright")[0].scrollHeight);
     });
 
     $("#imagingtable").on('click', ".showTD", function() {

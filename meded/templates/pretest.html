@@ -18,10 +18,13 @@
             <table id="leftnavtable">
                 <tbody>
                     <tr class="caserow">
-                        <td>Pre-Test</td>
+                        <td><h2><u>Home<u></h2></td>
                     </tr>
                     <tr class="caserow">
-                        <td>Ordering History</td>
+                        <td><b>Pre-Test</b></td>
+                    </tr>
+                    <tr class="caserow">
+                        <td>Patient History</td>
                     </tr>
                     <tr class="caserow">
                         <td>Imaging</td>
@@ -41,6 +44,12 @@
 
         <div id="centerpanenoright">
         	<h1>Pre-Test</h1>
+            <hr>
+            <button id="backButton" type="button">Back</button>
+            <button id="nextButton" type="button">Next!</button>
+            <br><hr>
+            <p>Look at these question for the case and try to answer them with the best knowledge you have right now. If you can, remember them as you will see them again.</p>
+            <p><i>Hint: click on the question to get the answer to pop up</i></p>
             <table id="pretesttable">
                 <thead>
                     <tr>
@@ -54,6 +63,7 @@
             <hr>
             <button id="backButton" type="button">Back</button>
             <button id="nextButton" type="button">Next!</button>
+            <br><hr>
         </div>
     </div>
 
@@ -83,7 +93,7 @@ $(document).ready(function($) {
     $("#leftnavtable").on("click", ".caserow", function() {
         if ($(this).children("td").html() == "Pre-Test") {
             window.location = "/pretest?caseID=" + selectedCaseID;
-        } else if ($(this).children("td").html() == "Ordering History") {
+        } else if ($(this).children("td").html() == "Patient History") {
             window.location = "/history?caseID=" + selectedCaseID;
         } else if ($(this).children("td").html() == "Imaging") {
             window.location = "/imaging?caseID=" + selectedCaseID;
@@ -93,6 +103,8 @@ $(document).ready(function($) {
             window.location = "/summary?caseID=" + selectedCaseID;
         } else if ($(this).children("td").html() == "Post-Test") {
             window.location = "/posttest?caseID=" + selectedCaseID;
+        } else if ($(this).children("td").html().indexOf("Home") > -1) {
+            window.location = "/";
         };
     });
 

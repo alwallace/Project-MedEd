@@ -67,18 +67,18 @@ def getCaseHistory(caseID):
 	return response
 
 def getCaseImaging(caseID):
-	response = [{}]
-	important_values = ['imaging', 'imaging_normal', 'imaging_explanation']
-	for v in important_values:
-		row = query_db("SELECT case_value_id, value FROM case_values WHERE case_id=? AND value_type=?", (caseID, v), True)
-		if v == 'imaging':
-			response[0][v] = row[1].split(';')
-			for i in range(0, len(response[0][v])):
-				response[0][v][i] = url_for('static', filename='images/' + response[0][v][i])
-		elif v == 'imaging_normal':
-			response[0][v] = row[1].split(';')
-		else:
-			response[0][v] = row[1]
+	response = [{}]	
+	# Get imaging information
+	row = query_db("SELECT case_value_id, value FROM case_values WHERE case_id=? AND value_type=?", (caseID, 'imaging'), True)
+	response[0]['imaging'] = row[1].split(';')
+	for i in range(0, len(response[0]['imaging'])):
+		response[0]['imaging'][i] = url_for('static', filename='images/' + response[0]['imaging'][i])
+	# Get the imaging_normal information
+	row = query_db("SELECT case_value_id, value FROM case_values WHERE case_id=? AND value_type=?", (caseID, 'imaging_normal'), True)
+	response[0]['imaging_normal'] = row[1].split(';')
+	# Get the imaging_expalanation information
+	row = query_db("SELECT case_value_id, value FROM case_values WHERE case_id=? AND value_type=?", (caseID, 'imaging_explanation'), True)
+	response[0]['imaging_explanation'] = row[1]
 
 	return response
 

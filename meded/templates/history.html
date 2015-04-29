@@ -18,10 +18,13 @@
             <table id="leftnavtable">
             	<tbody>
                     <tr class="caserow">
+                        <td><h2><u>Home<u></h2></td>
+                    </tr>
+                    <tr class="caserow">
                         <td>Pre-Test</td>
                     </tr>
                     <tr class="caserow">
-                        <td>Ordering History</td>
+                        <td><b>Patient History</b></td>
                     </tr>
                     <tr class="caserow">
                         <td>Imaging</td>
@@ -42,6 +45,10 @@
         <div id="centerpanenoright">
             <table id="centernavtable">
             	<h1>History</h1>
+                <hr>
+                <button id="backButton" type="button">Back</button>
+                <button id="nextButton" type="button">Next!</button>
+                <br><hr>
                 <p>Imagine you are in clinic or on the wards and you are ordering a chest x ray on a patient. Look at the following histories given in the "History" information to the radiologist filled out by the ordering physician. Are they helpful to the radiologist? Do they give pertinent information or do they simply fulfill the requirement of having something in the History box.</p> 
                 <table id="historiestable">
                     <thead>
@@ -60,6 +67,7 @@
             <hr>
             <button id="backButton" type="button">Back</button>
             <button id="nextButton" type="button">Next!</button>
+            <br><hr>
         </div>
     </div>
     
@@ -86,7 +94,7 @@ $(document).ready(function($) {
     $("#leftnavtable").on("click", ".caserow", function() {
         if ($(this).children("td").html() == "Pre-Test") {
             window.location = "/pretest?caseID=" + selectedCaseID;
-        } else if ($(this).children("td").html() == "Ordering History") {
+        } else if ($(this).children("td").html() == "Patient History") {
             window.location = "/history?caseID=" + selectedCaseID;
         } else if ($(this).children("td").html() == "Imaging") {
             window.location = "/imaging?caseID=" + selectedCaseID;
@@ -96,11 +104,13 @@ $(document).ready(function($) {
             window.location = "/summary?caseID=" + selectedCaseID;
         } else if ($(this).children("td").html() == "Post-Test") {
             window.location = "/posttest?caseID=" + selectedCaseID;
-        }
+        } else if ($(this).children("td").html().indexOf("Home") > -1) {
+            window.location = "/";
+        };
     });
 
     $("#centerpanenoright").on('click', "#backButton", function() {
-        window.location = "/pretest";
+        window.location = "/pretest?caseID=" + selectedCaseID;
     });
     $("#centerpanenoright").on('click', "#nextButton", function() {
         window.location = "/imaging?caseID=" + selectedCaseID;
@@ -108,6 +118,7 @@ $(document).ready(function($) {
 
     $("#centerpanenoright").on('click', "#showButton", function() {
         $("#historyexplanation").css("display", "block");
+        $("#centerpanenoright").scrollTop($("#centerpanenoright")[0].scrollHeight);
     });
 
     $.post("/history", {'caseID':selectedCaseID}, function(data, status) {

@@ -18,10 +18,13 @@
             <table id="leftnavtable">
                 <tbody>
                     <tr class="caserow">
+                        <td><h2><u>Home<u></h2></td>
+                    </tr>
+                    <tr class="caserow">
                         <td>Pre-Test</td>
                     </tr>
                     <tr class="caserow">
-                        <td>Ordering History</td>
+                        <td>Patient History</td>
                     </tr>
                     <tr class="caserow">
                         <td>Imaging</td>
@@ -33,7 +36,7 @@
                         <td>Summary</td>
                     </tr>
                     <tr class="caserow">
-                        <td>Post-Test</td>
+                        <td><b>Post-Test</b></td>
                     </tr>
                 </tbody>
             </table>
@@ -41,6 +44,12 @@
 
         <div id="centerpanenoright">
             <h1>Post-Test</h1>
+            <hr>
+            <button id="backButton" type="button">Back</button>
+            <button id="doneButton" type="button">Done!</button>
+            <br><hr>
+            <p>Again, look at these questions for the case and try to answer them again. All of the answers are in the previous material.</p>
+            <p><i>Hint: click on the question to get the answer to pop up</i></p>
             <table id="posttesttable">
                 <thead>
                     <tr>
@@ -54,6 +63,7 @@
             <hr>
             <button id="backButton" type="button">Back</button>
             <button id="doneButton" type="button">Done!</button>
+            <br><hr>
         </div>
     </div>
 
@@ -77,7 +87,7 @@ $(document).ready(function($) {
     $("#leftnavtable").on("click", ".caserow", function() {
         if ($(this).children("td").html() == "Pre-Test") {
             window.location = "/pretest?caseID=" + selectedCaseID;
-        } else if ($(this).children("td").html() == "Ordering History") {
+        } else if ($(this).children("td").html() == "Patient History") {
             window.location = "/history?caseID=" + selectedCaseID;
         } else if ($(this).children("td").html() == "Imaging") {
             window.location = "/imaging?caseID=" + selectedCaseID;
@@ -87,6 +97,8 @@ $(document).ready(function($) {
             window.location = "/summary?caseID=" + selectedCaseID;
         } else if ($(this).children("td").html() == "Post-Test") {
             window.location = "/posttest?caseID=" + selectedCaseID;
+        } else if ($(this).children("td").html().indexOf("Home") > -1) {
+            window.location = "/";
         };
     });
 
@@ -98,7 +110,7 @@ $(document).ready(function($) {
     });
 
     $("#centerpanenoright").on('click', "#backButton", function() {
-        window.location = "/summary";
+        window.location = "/summary?caseID=" + selectedCaseID;
     });
     $("#centerpanenoright").on('click', "#doneButton", function() {
         window.location = "/";

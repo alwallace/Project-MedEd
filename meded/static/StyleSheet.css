@@ -4,7 +4,7 @@
 #footer { height: 60px; left: 0; right: 0; bottom: 0; }
 
 #header {
-    background-color:rgb(50,50,50);
+    background-color:rgb(150,150,150);
     text-align:left;
     padding:5px;
 }
@@ -15,8 +15,9 @@
 }
 
 #leftpane {
+    box-sizing:border-box;
     line-height:30px;
-    background-color:rgb(100,100,100);
+    background-color:rgb(175,175,200);
     width:175px;
     height:100%;
     float:left;
@@ -50,22 +51,25 @@
 }
 
 #centerpanenoright {
+    box-sizing:border-box;
     height:100%;
-    border:5px solid navy;
+    border:3px solid navy;
+    padding:8px;
     overflow-y:auto;
     overflow-x:auto;
 }
 #rightpane {
+    box-sizing:border-box;
     line-height:30px;
-    background-color:rgb(100,100,100);
+    background-color:rgb(125,125,125);
     height:100%;
     width:400px;
     float:right;
-    padding:5px; 
-    margin:5px;
+    padding:8px; 
+    border:3px solid navy;
 }
 #footer {
-    background-color:rgb(50,50,50);
+    background-color:rgb(150,150,150);
     color:white;
     clear:both;
     text-align:right;
